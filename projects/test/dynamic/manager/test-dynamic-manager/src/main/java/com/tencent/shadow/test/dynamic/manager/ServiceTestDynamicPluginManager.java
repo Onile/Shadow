@@ -26,6 +26,7 @@ import android.view.View;
 
 import com.tencent.shadow.core.manager.installplugin.InstalledPlugin;
 import com.tencent.shadow.dynamic.host.EnterCallback;
+import com.tencent.shadow.test.cases.PluginIntentServiceConnectionTestCase;
 import com.tencent.shadow.test.cases.PluginServiceConnectionTestCase;
 import com.tencent.shadow.test.lib.constant.Constant;
 import com.tencent.shadow.test.lib.test_manager.TestManager;
@@ -56,14 +57,6 @@ public class ServiceTestDynamicPluginManager extends FastPluginManager {
     }
 
     /**
-     * @return 宿主so的ABI。插件必须和宿主使用相同的ABI。
-     */
-    @Override
-    public String getAbi() {
-        return "";
-    }
-
-    /**
      * @return 宿主中注册的PluginProcessService实现的类名
      */
     @Override
@@ -88,7 +81,7 @@ public class ServiceTestDynamicPluginManager extends FastPluginManager {
                 systemExitServiceCase.prepareUi();
                 break;
             case "com.tencent.shadow.test.plugin.particular_cases.plugin_service_for_host.SystemExitIntentService":
-                PluginServiceConnectionTestCase systemExitIntentService = new PluginServiceConnectionTestCase(mPluginLoader, pluginIntent);
+                PluginIntentServiceConnectionTestCase systemExitIntentService = new PluginIntentServiceConnectionTestCase(mPluginLoader, pluginIntent);
                 systemExitIntentService.prepareUi();
                 break;
             default:

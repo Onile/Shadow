@@ -18,11 +18,8 @@
 
 package com.tencent.shadow.test.dynamic.host;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -52,9 +49,7 @@ public class MainActivity extends Activity {
         final Spinner partKeySpinner = new Spinner(this);
         ArrayAdapter<String> partKeysAdapter = new ArrayAdapter<>(this, R.layout.part_key_adapter);
         partKeysAdapter.addAll(
-                Constant.PART_KEY_PLUGIN_MAIN_APP,
-                Constant.PART_KEY_MULTIDEX_V1_0_2,
-                Constant.PART_KEY_MULTIDEX_V2_0_1
+                Constant.PART_KEY_PLUGIN_MAIN_APP
         );
         partKeySpinner.setAdapter(partKeysAdapter);
 
@@ -72,12 +67,6 @@ public class MainActivity extends Activity {
                     case Constant.PART_KEY_PLUGIN_MAIN_APP:
                         intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.test.plugin.general_cases.lib.usecases.application.TestApplicationActivity");
                         break;
-                    case Constant.PART_KEY_MULTIDEX_V1_0_2:
-                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.test.plugin.particular_cases.multidex.v1_0_2.PluginMultidexV1_0_2Activity");
-                        break;
-                    case Constant.PART_KEY_MULTIDEX_V2_0_1:
-                        intent.putExtra(Constant.KEY_ACTIVITY_CLASSNAME, "com.tencent.shadow.test.plugin.particular_cases.multidex.v2_0_1.PluginMultidexV2_0_1Activity");
-                        break;
                 }
                 startActivity(intent);
             }
@@ -87,27 +76,6 @@ public class MainActivity extends Activity {
         rootView.addView(new TestViewConstructorCacheView(this));
 
         setContentView(rootView);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        throw new RuntimeException("必须赋予权限.");
-                    }
-                }
-            }
-        }
     }
 
 }

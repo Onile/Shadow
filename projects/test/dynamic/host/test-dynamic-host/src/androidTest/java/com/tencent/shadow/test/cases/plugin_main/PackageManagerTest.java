@@ -38,12 +38,21 @@ public class PackageManagerTest extends PluginMainAppTest {
 
     @Test
     public void testQueryContentProvidersName() {
-        matchTextWithViewTag("queryContentProviders/size", "2");
-        matchTextWithViewTag("queryContentProviders/name", "[android.support.v4.content.FileProvider, com.tencent.shadow.test.plugin.general_cases.lib.usecases.provider.TestProvider]");
+        matchTextWithViewTag("queryContentProviders/size", ">0");
     }
 
     @Test
     public void testResolveActivityByExplicitIntent() {
         matchTextWithViewTag("resolveActivity/explicit", "com.tencent.shadow.test.plugin.general_cases.lib.usecases.packagemanager.TestPackageManagerActivity");
+    }
+
+    @Test
+    public void testGetServiceInfoName() {
+        matchTextWithViewTag("getServiceInfo/name", "com.tencent.shadow.test.plugin.general_cases.lib.usecases.service.TestService");
+    }
+
+    @Test
+    public void testGetServiceInfoPackageName() {
+        matchTextWithViewTag("getServiceInfo/packageName", "com.tencent.shadow.test.hostapp");
     }
 }

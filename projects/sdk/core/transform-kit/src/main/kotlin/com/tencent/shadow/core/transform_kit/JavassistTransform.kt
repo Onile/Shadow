@@ -26,11 +26,12 @@ import java.io.File
 import java.io.OutputStream
 import java.util.zip.ZipInputStream
 
-open class JavassistTransform(project: Project, val classPoolBuilder: ClassPoolBuilder) : ClassTransform(project) {
+open class JavassistTransform(project: Project, val classPoolBuilder: ClassPoolBuilder) :
+    ClassTransform(project) {
     val mCtClassInputMap = mutableMapOf<CtClass, InputClass>()
     lateinit var classPool: ClassPool
 
-    override fun onOutputClass(className: String, outputStream: OutputStream) {
+    override fun onOutputClass(entryName: String?, className: String, outputStream: OutputStream) {
         classPool[className].writeOut(outputStream)
     }
 

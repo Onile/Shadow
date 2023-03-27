@@ -18,11 +18,10 @@
 
 package com.tencent.shadow.sample.host;
 
-import android.Manifest;
+import static com.tencent.shadow.sample.constant.Constant.PART_KEY_PLUGIN_BASE;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.tencent.shadow.sample.constant.Constant;
+import com.tencent.shadow.sample.host.plugin_view.HostAddPluginViewActivity;
 
 
 public class MainActivity extends Activity {
@@ -65,7 +65,17 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 String partKey = (String) partKeySpinner.getSelectedItem();
                 Intent intent = new Intent(MainActivity.this, PluginLoadActivity.class);
-                intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
+                switch (partKey) {
+                    //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
+                    case Constant.PART_KEY_PLUGIN_MAIN_APP:
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, PART_KEY_PLUGIN_BASE);
+                        break;
+                    case Constant.PART_KEY_PLUGIN_ANOTHER_APP:
+                        intent.putExtra(Constant.KEY_PLUGIN_PART_KEY, partKey);
+                        ;
+                        break;
+                }
+
                 switch (partKey) {
                     //为了演示多进程多插件，其实两个插件内容完全一样，除了所在进程
                     case Constant.PART_KEY_PLUGIN_MAIN_APP:
@@ -79,28 +89,16 @@ public class MainActivity extends Activity {
         });
         rootView.addView(startPluginButton);
 
+        Button startHostAddPluginViewActivityButton = new Button(this);
+        startHostAddPluginViewActivityButton.setText("宿主添加插件View");
+        startHostAddPluginViewActivityButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, HostAddPluginViewActivity.class);
+            startActivity(intent);
+        });
+        rootView.addView(startHostAddPluginViewActivityButton);
+
         setContentView(rootView);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-            }
-        }
-
-
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1) {
-            for (int i = 0; i < permissions.length; i++) {
-                if (permissions[i].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                        throw new RuntimeException("必须赋予权限.");
-                    }
-                }
-            }
-        }
     }
 
 }
